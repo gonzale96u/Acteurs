@@ -7,6 +7,7 @@ self.addEventListener('install', function(event) {
             'index.html',
             'cinema128x128.png',
             'cinema144x144.png',
+            'cinema512x512.png',
             'manifest.json',
             'worker.js'
           ]
