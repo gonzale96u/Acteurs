@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste acteurs</title>
+
+    <style>
+
+
+        body{
+            font-family: sans-serif;
+        }
+        #container{
+            display:flex;
+            flex-direction: row;
+            margin-bottom: 100px;
+            border-color: black;
+            border-width: 3px;
+            border-style: solid;
+        }
+
+        #photo img{
+            overflow:hidden;
+            -webkit-border-radius:50px;
+            -moz-border-radius:50px;
+            border-radius:50px;
+            width:90px;
+            height:90px;
+            margin-left: 10px;
+
+        }
+
+       
+        #date img{
+            height:20px;
+            vertical-align: text-bottom;
+        }
+
+        #infos{
+            margin-left:30px;
+            
+            
+        }
+
+        #infos div{
+            padding-top:5px;
+        }
+
+        #nom{
+            font-size:1.5em;
+            font-weight: bold;
+        }
+
+        #nb{
+            border-radius:50px;
+            background-color: orange;
+            
+        }
+
+        .date{
+            padding-left:5px;
+        }
+
+        #liste{
+          display:flex;
+          flex-direction: row;
+          line-height: 30px;
+          border-width: 3px;
+          border-style: solid;
+          margin-bottom: 50px;
+        }
+
+        #affiche{
+          margin-top: 12px;
+          margin-left: 10px;
+        }
+
+        #nom_film{
+          font-size:1.5em;
+          font-weight: bold;
+        }
+
+        #info_film{
+          line-height: 30px;
+        }
+
+        #boutons button{
+          background-color: rgb(255, 193, 79);
+          border: none;
+          font-size: 20px;
+          margin-right: 10px;
+          padding: 5px;
+          cursor: pointer;
+          text-transform: uppercase;
+          border-radius:5px;
+          letter-spacing: 1px;
+        }
+        
+        #boutons button:hover{
+          background-color: rgb(247, 172, 35)
+        }
+
+
+    </style>
+</head>
+<body>
+  <template id="templateActeur">
+
+  
+
+    <div id="container">
+        <div id="photo">
+            <img src="https://workshop.neotechweb.net/ws/ciamovie/1.0.0/acteurs/1.jpg"></img>
+            
+        </div>
+
+        <div id="infos">
+            <div id="nom">
+                Sylverster Stalone
+            </div>
+            
+            
+              <div id="date">
+                  <img src="https://workshop.neotechweb.net/ws/flags/64/us.png" /><span class="date">8 Octobre 1949</span>
+              </div>
+              <div id="nb_films">
+                  <span id="nb">58</span> films
+              </div>
+            
+        </div>
+        
+    </div>
+  </template>
+
+  <template id="templateFilm">
+    <div id="liste">
+      <div id="affiche">
+        <img src="stallone.jpg" width="100px">
+      </div>
+
+      <div id="infos">
+          <div id="nom_film">
+              Gremlins
+          </div>
+
+          <div id="info_film">
+              5 Décembre 1984 / 1h 45min / Comédie 
+              <br> De Joe Dante 
+              <br> Avec Zach Galligan, Phoebe cates, Hoyt Axton
+          </div>
+
+          <div id="boutons">
+            <button id="séances"> Séances </button>
+            <button id="vod"> VOD </button>
+          </div>
+
+          <div id="étoile">
+            <svg xmlns="http://www.w3.org/2000/svg" width="90" height="20">
+              <defs>
+                  <symbol id="star" viewBox="0 0 300 275">
+                    <polygon stroke-width="10" points="150,25 179,111 269,111
+                                                       197,165 223,251 150,200
+                                                       77,251 103,165 31,111 121,111"/>
+                  </symbol>
+                  <symbol id="stars">
+                    <use href="#star" width="20" height="20"/>
+                    <use href="#star" x="18" width="20" height="20"/>
+                    <use href="#star" x="36" width="20" height="20"/>
+                    <use href="#star" x="54" width="20" height="20"/>
+                    <use href="#star" x="72" width="20" height="20"/>
+                  </symbol>
+
+                  <clipPath id="film5654">
+                    <rect height="20" width="50"></rect>
+                  </clipPath>
+              </defs>
+
+                <use href="#stars"></use>
+                <use href="#stars" fill="#fecc00" stroke="#fecc00" clip-path="url(#film5654)"></use>
+
+            </svg>
+          </div>
+      </div>
+
+    </div>
+  </template>
+
+    <script>
+      async function getActeurs(){
+            let data = await fetch("https://workshop.neotechweb.net/ws/ciamovie/1.0.0/acteurs.php");
+            let datajson = await data.json();
+
+            let template = document.getElementById('templateActeur');
+
+            datajson.forEach(acteur => {
+                let content = template.content.cloneNode(true);
+                content.querySelector("#nom").innerText = acteur.Nom;
+                content.querySelector('#photo>img').setAttribute('src', 'https://workshop.neotechweb.net/ws/ciamovie/1.0.0/acteurs/' + acteur.idActeur + ".jpg");
+
+                document.body.appendChild(content);
+            });
+        }
+        
+
+        getActeurs();
+
+
+        async function getFilms(){
+            let data = await fetch("https://workshop.neotechweb.net/ws/ciamovie/1.0.0/films.php");
+            let datajson = await data.json();
+            let template = document.getElementById('templateFilm');
+
+
+            datajson.forEach(film => {
+                let content = template.content.cloneNode(true);
+                content.querySelector("#nom_film").innerText = film.Titre;
+                content.querySelector('#affiche>img').setAttribute('src', `https://workshop.neotechweb.net/ws/ciamovie/1.0.0/films/${film.Fichier}` );
+                document.body.appendChild(content);
+            });
+
+           
+        }
+        getFilms();
+    </script>
+    
+</body>
+</html>
