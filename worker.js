@@ -23,7 +23,14 @@ self.addEventListener('fetch', function(event) {
             if (response) {
               return response;
         }
-        return fetch(event.request);
+        return fetch(event.request)
+          .then(function(response){
+            return caches.open(cacheName)
+            .then(function(cache){
+              cache.put(event.request, response.clone());
+              return response;
+            });
+          });
       }
     )
   );
