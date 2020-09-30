@@ -2,12 +2,12 @@
     "name": "Ciao Movie",
     "short_name": "ciaomovie",
     "icons": [{
-    "src": "Acteurs Javascript/cinema128x128.png",
+    "src": "/cinema128x128.png",
     "sizes": "128x128",
     "type": "image/png"
   }, 
   {
-    "src": "Acteurs Javascript/cinema144x144.png",
+    "src": "/cinema144x144.png",
     "sizes": "144x144",
     "type": "image/png"
     }],
